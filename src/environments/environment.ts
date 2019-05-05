@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase : {
+    apiKey: "AIzaSyBF-CdHNq_Ff8AepEJZ19ytSsAoWq3QH9A",
+    authDomain: "turi-df39d.firebaseapp.com",
+    databaseURL: "https://turi-df39d.firebaseio.com",
+    projectId: "turi-df39d",
+    storageBucket: "turi-df39d.appspot.com",
+    messagingSenderId: "711506747450",
+    appId: "1:711506747450:web:0db27583b3f98bc6"
+  }
 };
 
 /*
