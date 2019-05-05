@@ -62,17 +62,17 @@ or just the SDK
 
 ### ERROR 1
 
-  │ Low           │ Insecure Default Configuration                               │
+  | Low           | Insecure Default Configuration                               |
   |---------------|--------------------------------------------------------------|
-  │ Package       │ finalhandler                                                 │
+  | Package       | finalhandler                                                 |
   |               |                                                              |
-  │ Patched in    │ No patch available                                           │
+  | Patched in    | No patch available                                           |
   |               |                                                              |
-  │ Dependency of │ finalhandler                                                 │
+  | Dependency of | finalhandler                                                 |
   |               |                                                              |
-  │ Path          │ finalhandler                                                 │
+  | Path          | finalhandler                                                 |
   |               |                                                              |
-  │ More info     │ https://nodesecurity.io/advisories/836                       │
+  | More info     | https://nodesecurity.io/advisories/836                       |
 
   ┌───────────────┬──────────────────────────────────────────────────────────────┐
   │ Low           │ Insecure Default Configuration                               │
