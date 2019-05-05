@@ -42,24 +42,38 @@ After you clone the repository you need to purposes
   ```
   npm install
   ```
+## To run
+To run in smartphone you need before to install the android studio,
+or just the SDK
 
+  ```
+  sudo apt install grandle
+
+  ```
+  ```
+  export ANDROID_HOME=~/Android/Sdk/
+
+  ```
+  ```
+  export PATH="$PATH:~/Android/Sdk/platform-tools/"
+  ```
 ## ERROR
 
 
 ### ERROR 1
-  ┌───────────────┬──────────────────────────────────────────────────────────────┐
+
   │ Low           │ Insecure Default Configuration                               │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
+  |---------------|--------------------------------------------------------------|
   │ Package       │ finalhandler                                                 │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
+  |               |                                                              |
   │ Patched in    │ No patch available                                           │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
+  |               |                                                              |
   │ Dependency of │ finalhandler                                                 │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
+  |               |                                                              |
   │ Path          │ finalhandler                                                 │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
+  |               |                                                              |
   │ More info     │ https://nodesecurity.io/advisories/836                       │
-  └───────────────┴──────────────────────────────────────────────────────────────┘
+
   ┌───────────────┬──────────────────────────────────────────────────────────────┐
   │ Low           │ Insecure Default Configuration                               │
   ├───────────────┼──────────────────────────────────────────────────────────────┤
