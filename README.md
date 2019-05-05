@@ -74,19 +74,19 @@ or just the SDK
   |               |                                                              |
   | More info     | https://nodesecurity.io/advisories/836                       |
 
-  ┌───────────────┬──────────────────────────────────────────────────────────────┐
-  │ Low           │ Insecure Default Configuration                               │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
-  │ Package       │ finalhandler                                                 │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
-  │ Patched in    │ No patch available                                           │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
-  │ Dependency of │ karma [dev]                                                  │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
-  │ Path          │ karma > connect > finalhandler                               │
-  ├───────────────┼──────────────────────────────────────────────────────────────┤
-  │ More info     │ https://nodesecurity.io/advisories/836                       |
-  └───────────────┴──────────────────────────────────────────────────────────────┘
+
+  | Low           | Insecure Default Configuration                               |
+  |---------------|--------------------------------------------------------------|
+  | Package       | finalhandler                                                 |
+  |               |                                                              |
+  | Patched in    | No patch available                                           |
+  |               |                                                              |
+  | Dependency of | karma [dev]                                                  |
+  |               |                                                              |
+  | Path          | karma > connect > finalhandler                               |
+  |               |                                                              |
+  | More info     | https://nodesecurity.io/advisories/836                       |
+
 
 #### to solve the error 1
 
@@ -96,19 +96,19 @@ or just the SDK
 
 ### ERROR 2
 
-┌───────────────┬──────────────────────────────────────────────────────────────┐
-│ High          │ Arbitrary File Overwrite                                     │
-├───────────────┼──────────────────────────────────────────────────────────────┤
-│ Package       │ tar                                                          │
-├───────────────┼──────────────────────────────────────────────────────────────┤
-│ Patched in    │ >=4.4.2                                                      │
-├───────────────┼──────────────────────────────────────────────────────────────┤
-│ Dependency of │ @angular-devkit/build-angular [dev]                          │
-├───────────────┼──────────────────────────────────────────────────────────────┤
-│ Path          │ @angular-devkit/build-angular > node-sass > node-gyp > tar   │
-├───────────────┼──────────────────────────────────────────────────────────────┤
-│ More info     │ https://nodesecurity.io/advisories/803                       │
-└───────────────┴──────────────────────────────────────────────────────────────┘
+
+| High          | Arbitrary File Overwrite                                     |
+|---------------|--------------------------------------------------------------|
+| Package       | tar                                                          |
+|               |                                                              |
+| Patched in    | >=4.4.2                                                      |
+|               |                                                              |
+| Dependency of | @angular-devkit/build-angular [dev]                          |
+|               |                                                              |
+| Path          | @angular-devkit/build-angular > node-sass > node-gyp > tar   |
+|               |                                                              |
+| More info     | https://nodesecurity.io/advisories/803                       |
+
 
 you need to open /node_modules/node-gyp/package.json and change
 
