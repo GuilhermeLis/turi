@@ -1,5 +1,7 @@
 {
   "name": "turi",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
