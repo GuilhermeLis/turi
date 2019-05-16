@@ -27,8 +27,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.1.0",
     "cordova-android": "8.0.0",
-    "cordova-plugin-firebase": "git+https://github.com/dpa99c/cordova-plugin-firebase.git#GH-1057-April-05-android-build-issue",
-    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-geolocation": "4.0.1",
     "core-js": "^2.5.4",
     "finalhandler": "^1.1.1",
     "firebase": "^5.11.1",
@@ -79,8 +78,7 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-firebase": {}
+      "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
       "android"
