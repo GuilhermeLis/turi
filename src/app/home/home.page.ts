@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+import {AngularFireStorage} from '@angular/fire/storage'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
-export interface Coordenada { latitude : number,
-  longitude: number, name: string;}
+
+export interface Coordenada { 
+  latitude : number,
+  longitude: number,
+  name: string,
+  historia: string;
+  url: string;
+  }
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -15,18 +22,26 @@ export class HomePage {
 
   todoCollectionRef: AngularFirestoreCollection<Coordenada>;
   todo$: Observable<Coordenada[]>;
+  img: Observable<string>;
 
   lat: any;
   lng: any;
-  name:string;
+  nameLugar:string;
   showCard: boolean = false;
   showDiv: boolean = false;
-  private place: Coordenada;
+  histo : string;
+  name : string;
     
-  constructor(public geo: Geolocation,public storage: AngularFirestore) {
+  constructor(
+    public geo: Geolocation,
+    public storage: AngularFirestore,
+    public store: AngularFireStorage) {
 
     this.todoCollectionRef = this.storage.collection('places');
     this.todo$ = this.todoCollectionRef.valueChanges();
+  
+    
+    //this.store.upload('casarão','../assets/casarao_tech.jpg');
 
   }
 
@@ -35,15 +50,20 @@ export class HomePage {
     this.locate();
     let distance: number = 10000000000000000000000000000000000000000000000000000000;
     let nDistance: number;
+    var place: Coordenada;
     this.todoCollectionRef.valueChanges().subscribe( dados=>{
       for(let i: number = 0; i < dados.length;i++){
         nDistance = Math.sqrt((this.lat - dados[i].latitude)**2 + (this.lng - dados[i].longitude)**2);
         if(distance > nDistance){
           distance = nDistance;
-          this.place = dados[i];
+          place = dados[i];
         }
       }
-    this.name = this.place.name;
+    this.nameLugar = place.name;
+    this.histo = place.historia;
+    const ref = this.store.ref(place.url);
+    this.img = ref.getDownloadURL();
+
     });
     //console.log(this.place);
     
@@ -51,7 +71,7 @@ export class HomePage {
 
 /* Função responsável por adivionar o dado ao firebase Cloud */
   addCoor(){
-    this.todoCollectionRef.add({latitude: this.lat, longitude: this.lng, name: this.name})
+    this.todoCollectionRef.add({latitude: this.lat, longitude: this.lng, name: this.name, historia: '',url:''})
     /*doc(this.name).set({latitude: this.lat, longitude: this.lng});*/
   }
 

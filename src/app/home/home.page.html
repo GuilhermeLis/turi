@@ -1,40 +1,35 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color = "dark">
     <ion-title>
-      Ionic Blank
+      Turi
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card >
-  <img src="../assets/casarao_tech.jpg"/>
+<ion-content color = "dark">
+
+  <ion-card id = "backcolor" >
+  <img [src]= "img | async"/>
   <ion-card-content>
     <ion-card-title>
-      {{name}}
+      {{nameLugar}}
       </ion-card-title>
-    <p>
-      The most popular industrial group ever, and largely
-      responsible for bringing the music to a mass audience.
-      lllllllllllllllllllllllllllllllllllllll
-      lllllllllllllllllllllllllllllllllllllllllllllll
-      llllllllllllllllllllllllllllllllllllllllllllllllll
-      llllllllllllllllllllllllllllllllllllllllllllllllll
-      llllllllllllllllllllllllllllllllllllllllllllllll
+    <p class = "center" >
+        {{histo}}
     </p>
-    <p>Lat: {{ lat }}
-      Lang: {{ lng }}</p>
   </ion-card-content>
+
   <ion-input [(ngModel)]="name"></ion-input>
-  <ion-button (click)="locate()" class="square" color="dark">
-    localizar
-  </ion-button>
-  <ion-button (click) = "addCoor()" class ='square' color = 'dark'>
-    salvar
-  </ion-button>
-  <ion-button (click) = "NearPlace()" class ='square' color = 'dark'>
-    buscar
-  </ion-button>
+
+  <div class = "container-fluid">
+      <ion-button (click) = "addCoor()" class =' center' color = 'dark'>
+          salvar
+        </ion-button>
+        <ion-button (click) = "NearPlace()" class =' center' color = 'dark'>
+          buscar
+        </ion-button>
+  </div>
+  
 </ion-card>
 
 </ion-content>

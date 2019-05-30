@@ -1,5 +1,19 @@
-.square{
-    --border-radius: 0%;
-    --padding-start: 100px;
-    --padding-end: 100px;
+#backcolor{
+    background-color: aliceblue;
+}
+
+p{
+    text-align: justify;
+}
+.center{
+    
+    margin: 0 auto;
+     
+}
+
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
