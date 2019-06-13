@@ -6,20 +6,36 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color = "dark">
+<ion-content color = "dark" >
 
-  <ion-card id = "backcolor" >
+    <div class="container center" *ngIf=  "des">
+        <p>
+          Esse é o <strong>Turi</strong> um aplicativo que vai lhe ajudar
+          a conhecer melhor o <strong> centro histórico de São Luis 
+              do Maranhão</strong> . Clique no botão para iniciar 
+        </p>
+        <span>
+            <ion-button (click) = 'start()' class = "center" id="color">
+                Iniciar
+              </ion-button>
+        </span>
+        
+      
+      
+      </div>
+
+  <ion-card id = "backcolor" *ngIf="tela" >
   <img [src]= "img | async"/>
   <ion-card-content>
     <ion-card-title>
       {{nameLugar}}
       </ion-card-title>
-    <p class = "center" >
+    <p>
         {{histo}}
     </p>
   </ion-card-content>
 
-  <ion-input [(ngModel)]="name"></ion-input>
+  <ion-input [(ngModel)]="name" type = "text"></ion-input>
 
   <div class = "container-fluid">
       <ion-button (click) = "addCoor()" class =' center' color = 'dark'>

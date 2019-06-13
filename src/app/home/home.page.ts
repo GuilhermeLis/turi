@@ -3,7 +3,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import {AngularFireStorage} from '@angular/fire/storage'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+
+import { OnDestroy } from "@angular/core";
 
 
 export interface Coordenada { 
@@ -23,7 +25,8 @@ export class HomePage {
   todoCollectionRef: AngularFirestoreCollection<Coordenada>;
   todo$: Observable<Coordenada[]>;
   img: Observable<string>;
-
+  des : boolean = true;
+  tela : boolean = false;
   lat: any;
   lng: any;
   nameLugar:string;
@@ -31,41 +34,61 @@ export class HomePage {
   showDiv: boolean = false;
   histo : string;
   name : string;
+
+
+  private subscription : Subscription ;
     
   constructor(
     public geo: Geolocation,
-    public storage: AngularFirestore,
-    public store: AngularFireStorage) {
+    private store: AngularFirestore,
+    private storage: AngularFireStorage) {
 
-    this.todoCollectionRef = this.storage.collection('places');
+    this.todoCollectionRef = this.store.collection('places');
     this.todo$ = this.todoCollectionRef.valueChanges();
   
     
     //this.store.upload('casarão','../assets/casarao_tech.jpg');
 
   }
+  
+ read(collectionName:string) {
+    return this.store.collection(collectionName)
+      .snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          console.log('reads');
+          return { id, ...data }
+        }))
+      )
+  }
 
   /* Encontra o lugar mais proximo */
   NearPlace(){
     this.locate();
-    let distance: number = 10000000000000000000000000000000000000000000000000000000;
-    let nDistance: number;
+    var distance: number = 10000000000000000000000000000000000000000000000000000000;
+    var nDistance: number;
     var place: Coordenada;
-    this.todoCollectionRef.valueChanges().subscribe( dados=>{
-      for(let i: number = 0; i < dados.length;i++){
+//     var sub = this.todoCollectionRef.valueChanges()
+    
+    this.subscription = this.read('places').subscribe((dados)=>{
+      console.log('entrou');
+      console.log(dados);
+      for(var i: number = 0; i < dados.length;i++){
         nDistance = Math.sqrt((this.lat - dados[i].latitude)**2 + (this.lng - dados[i].longitude)**2);
         if(distance > nDistance){
           distance = nDistance;
           place = dados[i];
         }
       }
+      
     this.nameLugar = place.name;
     this.histo = place.historia;
-    const ref = this.store.ref(place.url);
+    const ref = this.storage.ref(place.url);
     this.img = ref.getDownloadURL();
 
     });
-    //console.log(this.place);
+
     
   }
 
@@ -96,5 +119,15 @@ export class HomePage {
       this.showDiv = false;
     }
     
+  }
+
+  start(){
+    this.des = false;
+    this.tela = true;
+    this.NearPlace();
+    }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
