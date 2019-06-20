@@ -54,6 +54,13 @@ export class HomePage {
 
     //this.store.upload('casarão','../assets/casarao_tech.jpg');
 
+   // const dado =  this.backendSvc.readAllWithoutOrder('places')
+    
+    
+   // dado.subscribe(dado => {
+   //   console.log(dado)
+   // })
+
   }
 
   /* Encontra o lugar mais proximo */
@@ -70,11 +77,11 @@ export class HomePage {
     // ---------------- Metodo com async/await ---------------- 
     const snap = await this.backendSvc.readAllPromise('places');
     snap.forEach((doc) => {
-      console.log(doc.id, '=>', doc.data());
+      //console.log(doc.id, '=>', doc.data());
       array.push({ id: doc.id, ...doc.data() });
     });
 
-    console.log(array);
+    //console.log(array);
 
     // ---------------- Metodo com then ---------------- 
     // this.backendSvc.readAllPromise('places').then((snapshot: any) => {
@@ -86,26 +93,25 @@ export class HomePage {
 
 
     // ---------------- Metodo com observables ---------------- 
-    // this.subscription = this.backendSvc.readAllWithoutOrder('places').subscribe((dados: any) => {
+     this.subscription = this.backendSvc.readAllWithoutOrder('places').subscribe((dados: any) => {
     //   console.log('entrou');
     //   console.log(dados);
-    //   for (var i: number = 0; i < dados.length; i++) {
+       dados.forEach( element => {
     //     console.log(Math.sqrt((this.lat - dados[i].latitude) ** 2 + (this.lng - dados[i].longitude) ** 2));
-    //     nDistance = Math.sqrt((this.lat - dados[i].latitude) ** 2 + (this.lng - dados[i].longitude) ** 2);
-    //     if (distance > nDistance) {
-    //       distance = nDistance;
-    //       place = dados[i];
-    //     }
-    //   }
-
+         nDistance = Math.sqrt((this.lat - element.latitude) ** 2 + (this.lng - element.longitude) ** 2);
+         if (distance > nDistance) {
+           distance = nDistance;
+           place = element;
+         }
+       })
     //   console.log(distance);
     //   console.log(place);
-    //   // this.nameLugar = place.name;
-    //   // this.histo = place.historia;
-    //   // const ref = this.storage.ref(place.url);
-    //   // this.img = ref.getDownloadURL();
+       this.nameLugar = place.name;
+       this.histo = place.historia;
+       const ref = this.storage.ref(place.url);
+       this.img = ref.getDownloadURL();
 
-    // });
+     });
 
 
   }
@@ -117,7 +123,7 @@ export class HomePage {
     this.name = 'Teste';
 
     const data = { latitude: this.lat, longitude: this.lng, name: this.name, historia: '', url: '' };
-    console.log(data);
+    //console.log(data);
 
     // const user = await this.authSvc.getCurrentUser();
     // if (user && user.uid)
@@ -140,11 +146,11 @@ export class HomePage {
       this.lat = pos.coords.latitude;
       this.lng = pos.coords.longitude;
 
-      console.log(this.lat);
-      console.log(this.lng);
+      //console.log(this.lat);
+      //onsole.log(this.lng);
 
-    }).catch(err => console.log(err));
-  }
+    })//.catch(err => console.log(err));
+  } 
   /* função responsável por mudar a tela*/
   changeShow() {
     if (this.showCard == true) {

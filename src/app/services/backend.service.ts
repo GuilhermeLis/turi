@@ -29,14 +29,14 @@ export class BackendService {
     return { timestamp: this.timestamp, createdAt: +new Date(), createdBy, ...data };
   }
 
-  read(path: string, uid: string, orderBy: string, ascOrDesc: any) {
+  read(path: string, orderBy: string, ascOrDesc: any) {
     return this.FSDB.collection(path, ref =>
       ref.orderBy(orderBy, ascOrDesc))
       .snapshotChanges().pipe(
         map(actions => actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-          console.log('read');
+          //console.log('read');
           return { id, ...data }
         }))
       )
@@ -50,7 +50,7 @@ export class BackendService {
         map(actions => actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-          console.log('read-all');
+          //console.log('read-all');
           return { id, ...data }
         }))
       )
@@ -62,7 +62,7 @@ export class BackendService {
         map(actions => actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-          console.log('read-all');
+          //console.log('read-all');
           return { id, ...data }
         }))
       )
