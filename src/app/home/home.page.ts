@@ -9,11 +9,17 @@ import { Observable, Subscription } from 'rxjs';
 import { OnDestroy } from "@angular/core";
 import { BackendService } from '../services/backend.service';
 import { AuthService } from '../services/auth.service';
-import { Toast } from '@ionic-native/toast/ngx';
-import { ToastController, NavController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';''
 import { AlertController } from '@ionic/angular';
 
 import { Network } from '@ionic-native/network';
+
+import { Diagnostic } from '@ionic-native/diagnostic';
+
+//import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
+
+
 
 
 
@@ -55,13 +61,12 @@ export class HomePage {
     private backendSvc: BackendService,
     private authSvc: AuthService,
     private toastController: ToastController,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    //private locationAccuracy: LocationAccuracy
+    ) {}
 
   /* Encontra o lugar mais proximo */
   async  NearPlace() {
-    Network.onDisconnect().subscribe(()=>{
-      this.presentToast('É necessário que a internet do dispositivo esteja ligada') 
-    })
     this.locate();
     var distance: number = 10000000000000000000000000000000000000000000000000000000;
     var nDistance: number;
@@ -80,10 +85,8 @@ export class HomePage {
 
     // ---------------- Metodo com observables ---------------- 
      this.subscription = this.backendSvc.readAllWithoutOrder('places').subscribe((dados: any) => {
-    //   console.log('entrou');
-    //   console.log(dados);
+
        dados.forEach( element => {
-    //     console.log(Math.sqrt((this.lat - dados[i].latitude) ** 2 + (this.lng - dados[i].longitude) ** 2));
          nDistance = Math.sqrt((this.lat - element.latitude) ** 2 + (this.lng - element.longitude) ** 2);
          if (distance > nDistance) {
            distance = nDistance;
@@ -109,15 +112,27 @@ export class HomePage {
 
   }
   /* Função responsável por pega a tual localização do dispositivo */
-  locate() {
-    this.geo.getCurrentPosition().then(pos => {
+  veriLocation(){
+    var is2 =   Diagnostic.locationMode.LOCATION_OFF
+
+    Diagnostic.getLocationMode().then((state)=>{
+      if (state == is2){
+        this.caixaDialogo()        
+      }
+      
+    }).catch(err =>{
+      //this.presentToast(err)
+    })
+
+  }
+
+   locate() {
+     this.veriLocation()
+   var promise = this.geo.getCurrentPosition().then(pos => {
       this.lat = pos.coords.latitude;
       this.lng = pos.coords.longitude;
 
-    }).catch(err =>{ 
-      
-    this.presentToast('É necessário que a localização do dispositivo esteja ligada') 
-    });
+    }).catch(err => this.presentToast('É precisso acessar a sua localização conseguir funcionar'));
   } 
   /* função responsável por mudar a tela*/
   changeShow() {
@@ -147,6 +162,24 @@ export class HomePage {
       duration: 2000
     });
     toast.present();
+  }
+
+ async caixaDialogo(){
+    const confirm = await this.toastController.create({
+      // title: '<b>Location</b>',
+       message: 'Location information não está ligado. Vá até as configurações habilitar a localização',
+       buttons: [
+
+         {
+           text: 'GO TO SETTINGS',
+           handler: () => {
+             Diagnostic.switchToLocationSettings();
+
+           }
+         }
+       ]
+     });
+     confirm.present();
   }
 
 
