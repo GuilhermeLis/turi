@@ -17,6 +17,7 @@ export interface Coordenada {
   name: string,
   historia: string;
   url: string;
+  lerMais: string;
 }
 @Component({
   selector: 'app-home',
@@ -37,6 +38,7 @@ export class HomePage {
   showDiv: boolean = false;
   histo: string;
   name: string;
+  url: string;
 
 
   private subscription: Subscription;
@@ -108,6 +110,7 @@ export class HomePage {
     //   console.log(place);
        this.nameLugar = place.name;
        this.histo = place.historia;
+       this.url = place.lerMais;
        const ref = this.storage.ref(place.url);
        this.img = ref.getDownloadURL();
 

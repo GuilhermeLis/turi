@@ -35,15 +35,15 @@
     </p>
   </ion-card-content>
 
-  <ion-input [(ngModel)]="name" type = "text"></ion-input>
-
   <div class = "container-fluid">
-      <ion-button (click) = "addCoor()" class =' center' color = 'dark'>
-          salvar
+        <ion-button float-left (click) = "NearPlace()" class ="pd-top-0" color = 'dark'>
+          Buscar
         </ion-button>
-        <ion-button (click) = "NearPlace()" class =' center' color = 'dark'>
-          buscar
+        <a [href]= "url">
+        <ion-button float-right *ngIf="url != null"  class ="pd-top-0" color = 'dark'>
+          Ler mais
         </ion-button>
+      </a>
   </div>
   
 </ion-card>

@@ -25,6 +25,16 @@ p{
     
 }
 
+.pd-top-50{
+    padding-top: 50px;
+}
+
+.square{
+    --border-radius: 0%;
+    --padding-start: 20px;
+    --padding-end: 20px;
+}
+
 .container-fluid {
     padding-right: 15px;
     padding-left: 15px;

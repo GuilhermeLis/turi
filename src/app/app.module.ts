@@ -17,6 +17,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+import { GooglePlus } from '@ionic-native/google-plus'
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -27,6 +29,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     AngularFireAuthModule
   ],
   providers: [
+  //  GooglePlus,
     StatusBar,
     SplashScreen,
     Geolocation,
