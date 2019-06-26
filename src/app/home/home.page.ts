@@ -9,6 +9,12 @@ import { Observable, Subscription } from 'rxjs';
 import { OnDestroy } from "@angular/core";
 import { BackendService } from '../services/backend.service';
 import { AuthService } from '../services/auth.service';
+import { Toast } from '@ionic-native/toast/ngx';
+import { ToastController, NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+
+import { Network } from '@ionic-native/network';
+
 
 
 export interface Coordenada {
@@ -45,33 +51,21 @@ export class HomePage {
 
   constructor(
     public geo: Geolocation,
-    // private store: AngularFirestore,
     private storage: AngularFireStorage,
     private backendSvc: BackendService,
-    private authSvc: AuthService) {
-
-    // this.todoCollectionRef = this.store.collection('places');
-    // this.todo$ = this.todoCollectionRef.valueChanges();
-
-
-    //this.store.upload('casarão','../assets/casarao_tech.jpg');
-
-   // const dado =  this.backendSvc.readAllWithoutOrder('places')
-    
-    
-   // dado.subscribe(dado => {
-   //   console.log(dado)
-   // })
-
-  }
+    private authSvc: AuthService,
+    private toastController: ToastController,
+    private alertController: AlertController) { }
 
   /* Encontra o lugar mais proximo */
   async  NearPlace() {
+    Network.onDisconnect().subscribe(()=>{
+      this.presentToast('É necessário que a internet do dispositivo esteja ligada') 
+    })
     this.locate();
     var distance: number = 10000000000000000000000000000000000000000000000000000000;
     var nDistance: number;
     var place: Coordenada;
-    //     var sub = this.todoCollectionRef.valueChanges()
 
     const array = []
 
@@ -79,19 +73,9 @@ export class HomePage {
     // ---------------- Metodo com async/await ---------------- 
     const snap = await this.backendSvc.readAllPromise('places');
     snap.forEach((doc) => {
-      //console.log(doc.id, '=>', doc.data());
       array.push({ id: doc.id, ...doc.data() });
     });
 
-    //console.log(array);
-
-    // ---------------- Metodo com then ---------------- 
-    // this.backendSvc.readAllPromise('places').then((snapshot: any) => {
-    //   console.log('entrou')
-    //   snapshot.forEach((doc) => {
-    //     console.log(doc.id, '=>', doc.data());
-    //   });
-    // });
 
 
     // ---------------- Metodo com observables ---------------- 
@@ -106,8 +90,7 @@ export class HomePage {
            place = element;
          }
        })
-    //   console.log(distance);
-    //   console.log(place);
+
        this.nameLugar = place.name;
        this.histo = place.historia;
        this.url = place.lerMais;
@@ -119,25 +102,7 @@ export class HomePage {
 
   }
 
-  /* Função responsável por adivionar o dado ao firebase Cloud */
-  async addCoor() {
 
-    // workarround -> this.name is undefined
-    this.name = 'Teste';
-
-    const data = { latitude: this.lat, longitude: this.lng, name: this.name, historia: '', url: '' };
-    //console.log(data);
-
-    // const user = await this.authSvc.getCurrentUser();
-    // if (user && user.uid)
-    //   console.log('Pode enviar os dados com o uid de quem está logado');
-
-    return this.backendSvc.add('places', data, 'um-uid-qualquer')
-      .then((resp) => console.log(resp))
-      .catch((err) => console.log(err));
-
-    /*doc(this.name).set({latitude: this.lat, longitude: this.lng});*/
-  }
 
   put() {
     this.todo$;
@@ -149,10 +114,10 @@ export class HomePage {
       this.lat = pos.coords.latitude;
       this.lng = pos.coords.longitude;
 
-      //console.log(this.lat);
-      //onsole.log(this.lng);
-
-    })//.catch(err => console.log(err));
+    }).catch(err =>{ 
+      
+    this.presentToast('É necessário que a localização do dispositivo esteja ligada') 
+    });
   } 
   /* função responsável por mudar a tela*/
   changeShow() {
@@ -175,4 +140,14 @@ export class HomePage {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+  async presentToast(text:string) {
+    const toast = await this.toastController.create({
+      message: text,
+      duration: 2000
+    });
+    toast.present();
+  }
+
+
 }
