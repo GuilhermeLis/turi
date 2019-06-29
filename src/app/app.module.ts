@@ -16,8 +16,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-//import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-//import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
 
 
 
@@ -28,8 +27,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
-    //AndroidPermissions,
-    //LocationAccuracy,
     AngularFireAuthModule
   ],
   providers: [

@@ -8,22 +8,6 @@
 
 <ion-content color = "dark" >
 
-    <div class="container center" *ngIf=  "des">
-        <p>
-          Esse é o <strong>Turi</strong> um aplicativo que vai lhe ajudar
-          a conhecer melhor o <strong> centro histórico de São Luis 
-              do Maranhão</strong> . Clique no botão para iniciar 
-        </p>
-        <span>
-            <ion-button (click) = 'start()' class = "center" id="color">
-                Iniciar
-              </ion-button>
-        </span>
-        
-      
-      
-      </div>
-
   <ion-card id = "backcolor" *ngIf="tela" >
   <img [src]= "img | async"/>
   <ion-card-content>
@@ -32,19 +16,11 @@
       </ion-card-title>
     <p>
         {{histo}}
+        <a [href]="url" *ngIf=" url != null ">
+          Ler mais
+        </a>
     </p>
   </ion-card-content>
-
-  <div class = "container-fluid">
-        <ion-button float-left (click) = "NearPlace()" class ="pd-top-0" color = 'dark'>
-          Buscar
-        </ion-button>
-        <a [href]= "url">
-        <ion-button float-right *ngIf="url != null"  class ="pd-top-0" color = 'dark'>
-          Ler mais
-        </ion-button>
-      </a>
-  </div>
   
 </ion-card>
 

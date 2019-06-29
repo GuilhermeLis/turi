@@ -19,6 +19,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Network } from '@ionic-native/network';
 
 import { Diagnostic } from '@ionic-native/diagnostic';
+import { Router } from '@angular/router';
 //import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 //import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
@@ -46,7 +47,6 @@ export class HomePage {
   todoCollectionRef: AngularFirestoreCollection<Coordenada>;
   todo$: Observable<Coordenada[]>;
   img: Observable<string>;
-  des: boolean = true;
   tela: boolean = false;
   lat: any;
   lng: any;
@@ -61,30 +61,35 @@ export class HomePage {
   private subscription: Subscription;
 
   constructor(
-    public geo: Geolocation,
+    public router: Router,
+    private geo: Geolocation,
     private storage: AngularFireStorage,
     private backendSvc: BackendService,
     private authSvc: AuthService,
     private toastController: ToastController,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    //private locationAcurracy: LocationAccuracy
-    //private locationAccuracy: LocationAccuracy
     ) {
+      this.NearPlace()
+      setInterval(()=>{
+        this.NearPlace()
+        console.log('buscando em')
+      },60000)
     }
 
-  /* Encontra o lugar mais proximo */
+  //------------------------Encontra o lugar mais proximo-----------------------------------------
   async  NearPlace() {
     this.Loading()
     this.locate();
     var distance: number = 10000000000000000000000000000000000000000000000000000000;
     var nDistance: number;
+    var distancePlace: number;
     var place: Coordenada;
 
     const array = []
 
 
-    // ---------------- Metodo com async/await ---------------- 
+    // ---------------- Pucha todos os itens do banco ---------------- 
     const snap = await this.backendSvc.readAllPromise('places');
     snap.forEach((doc) => {
       array.push({ id: doc.id, ...doc.data() });
@@ -92,23 +97,37 @@ export class HomePage {
 
 
 
-    // ---------------- Metodo com observables ---------------- 
+    // ---------------- Encontra o lugar mais próximo ---------------- 
      this.subscription = this.backendSvc.readAllWithoutOrder('places').subscribe((dados: any) => {
 
        dados.forEach( element => {
-         nDistance = Math.sqrt((this.lat - element.latitude) ** 2 + (this.lng - element.longitude) ** 2);
+         //------------------------ Essa é a Fórmula de Haversine ----------------------------
+         nDistance =6371 * Math.acos(
+           Math.cos((Math.PI * (90-element.latitude))/180) * 
+           Math.cos((Math.PI * (90-this.lat))/180)+
+           Math.sin((Math.PI * (90-element.latitude))/180)*
+           Math.sin((Math.PI * (90-this.lat))/180) *
+           Math.cos((Math.PI * (this.lng - element.longitude))/180)
+           );
+
          if (distance > nDistance) {
            distance = nDistance;
            place = element;
+           distancePlace = nDistance;
          }
        })
+       if (this.Can(distancePlace)){
 
-       this.nameLugar = place.name;
-       this.histo = place.historia;
-       this.url = place.lerMais;
-       const ref = this.storage.ref(place.url);
-       this.img = ref.getDownloadURL();
+        this.tela = true;
+        this.nameLugar = place.name;
+        this.histo = place.historia;
+        this.url = place.lerMais;
+        const ref = this.storage.ref(place.url);
+        this.img = ref.getDownloadURL();
 
+       }else{
+        this.DHNP()
+       }
      });
 
 
@@ -116,11 +135,15 @@ export class HomePage {
 
 
 
-  put() {
-    this.todo$;
-
+  private Can(Distancia) : boolean {
+    const maxDistance =  0.01
+    if ( Distancia > maxDistance){
+      return false
+    }else{
+      return true
+    }
   }
-  /* Função responsável por pega a tual localização do dispositivo */
+  // -----------------Verifica se a o GPS está ligado--------------------
   veriLocation(){
     var is2 =   Diagnostic.locationMode.LOCATION_OFF
 
@@ -130,11 +153,10 @@ export class HomePage {
       }
       
     }).catch(err =>{
-      //this.presentToast(err)
     })
 
   }
-
+  //-------------------------- Captura a atual localização do usuário-------------------------
    locate() {
      this.veriLocation()
    var promise = this.geo.getCurrentPosition().then(pos => {
@@ -145,39 +167,22 @@ export class HomePage {
       this.alerta()
     });
   } 
-  /* função responsável por mudar a tela*/
-  changeShow() {
-    if (this.showCard == true) {
-      this.showCard = false;
-      this.showDiv = true;
-    } else {
-      this.showCard = true;
-      this.showDiv = false;
-    }
-
-  }
-
-  start() {
-    this.des = false;
-    this.tela = true;
-    this.NearPlace();
-  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  async presentToast(text:string) {
-    const toast = await this.toastController.create({
-      message: text,
-      duration: 2000
-    });
-    toast.present();
-  }
+//  async presentToast(text:string) {
+//    const toast = await this.toastController.create({
+//      message: text,
+//      duration: 2000
+//    });
+//    toast.present();
+//  }
 
+//----------------------Notifica o usuário que o GPS não está ligado--------------------------------
  async caixaDialogo(){
     const confirm = await this.alertController.create({
-      // title: '<b>Location</b>',
        header: 'O GPS não está ligado',
        message: 'Para eu funcionar corretamente preciso que seu GPS esteja ligado',
        
@@ -194,7 +199,7 @@ export class HomePage {
            text: 'Ligar o GPS',
            handler: () => {
              LocationAccuracy.request(LocationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
-             this.NearPlace()
+             //this.NearPlace()
 
 
            }
@@ -207,9 +212,9 @@ export class HomePage {
      confirm.present();
   }
 
-  async alerta(){
+//--------Notifica que o aplicativo não tem permissão de pegar a localização do usuario-------------
+async alerta(){
     const confirm = await this.alertController.create({
-      // title: '<b>Location</b>',
        header: 'Não consigo consultar sua localização',
        message: 'Para eu funcionar preciso da permissão para usar a sua Geolocalização',
        buttons: [
@@ -225,7 +230,7 @@ export class HomePage {
            text: 'Conseder permissão',
            handler: () => {
              AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
-             this.NearPlace()
+             //this.NearPlace()
 
 
            }
@@ -238,7 +243,39 @@ export class HomePage {
      confirm.present();
   }
 
+//-------------- Caixa de dialogo que avisa o usuário que não há casarões próximos --------------------
+async DHNP(){
+    const confirm = await this.alertController.create({
+       header: 'Nâo tem casarões próximos',
+       message: 'Infelizmente não há um casarão no raio de 10 metros',
+       buttons: [
 
+        {
+          text:  'Sair ',
+          handler:() => {
+            clearInterval()
+           confirm.dismiss();
+           this.router.navigate(['inicio'])
+          }
+        },
+
+         {
+           text: 'Buscar novamente',
+           handler: () => {
+             this.NearPlace()
+
+
+           }
+         }
+
+         
+       ],
+       backdropDismiss: false
+     });
+     confirm.present();
+}
+
+//------------------Faz a animação de loading-----------------------------
   async Loading (){
     const loading = await this.loadingController.create({
       spinner: 'bubbles',
