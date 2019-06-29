@@ -56,6 +56,7 @@ export class HomePage {
   histo: string;
   name: string;
   url: string;
+  private interval: any;
 
 
   private subscription: Subscription;
@@ -71,9 +72,8 @@ export class HomePage {
     private loadingController: LoadingController,
     ) {
       this.NearPlace()
-      setInterval(()=>{
+      const interval =  setInterval(()=>{
         this.NearPlace()
-        console.log('buscando em')
       },60000)
     }
 
@@ -81,6 +81,7 @@ export class HomePage {
   async  NearPlace() {
     this.Loading()
     this.locate();
+    const maxDistance =  0.01
     var distance: number = 10000000000000000000000000000000000000000000000000000000;
     var nDistance: number;
     var distancePlace: number;
@@ -116,7 +117,7 @@ export class HomePage {
            distancePlace = nDistance;
          }
        })
-       if (this.Can(distancePlace)){
+       if (distancePlace < maxDistance){
 
         this.tela = true;
         this.nameLugar = place.name;
@@ -131,17 +132,6 @@ export class HomePage {
      });
 
 
-  }
-
-
-
-  private Can(Distancia) : boolean {
-    const maxDistance =  0.01
-    if ( Distancia > maxDistance){
-      return false
-    }else{
-      return true
-    }
   }
   // -----------------Verifica se a o GPS está ligado--------------------
   veriLocation(){
@@ -191,7 +181,9 @@ export class HomePage {
         {
           text:  'Sair ',
           handler:() => {
+            clearInterval(this.interval)
            confirm.dismiss();
+           this.router.navigate(['inicio'])
           }
         },
 
@@ -222,7 +214,9 @@ async alerta(){
         {
           text:  'Sair ',
           handler:() => {
+            clearInterval(this.interval)
            confirm.dismiss();
+           this.router.navigate(['inicio'])
           }
         },
 
@@ -253,7 +247,7 @@ async DHNP(){
         {
           text:  'Sair ',
           handler:() => {
-            clearInterval()
+            clearInterval(this.interval)
            confirm.dismiss();
            this.router.navigate(['inicio'])
           }
@@ -285,6 +279,5 @@ async DHNP(){
 
     await loading.present()
   }
-
 
 }
