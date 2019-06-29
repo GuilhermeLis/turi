@@ -9,12 +9,17 @@ import { Observable, Subscription } from 'rxjs';
 import { OnDestroy } from "@angular/core";
 import { BackendService } from '../services/backend.service';
 import { AuthService } from '../services/auth.service';
-import { ToastController, NavController } from '@ionic/angular';''
+import { ToastController, NavController, LoadingController } from '@ionic/angular';''
 import { AlertController } from '@ionic/angular';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+
+
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { Network } from '@ionic-native/network';
 
 import { Diagnostic } from '@ionic-native/diagnostic';
+//import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 //import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
@@ -62,11 +67,15 @@ export class HomePage {
     private authSvc: AuthService,
     private toastController: ToastController,
     private alertController: AlertController,
+    private loadingController: LoadingController,
+    //private locationAcurracy: LocationAccuracy
     //private locationAccuracy: LocationAccuracy
-    ) {}
+    ) {
+    }
 
   /* Encontra o lugar mais proximo */
   async  NearPlace() {
+    this.Loading()
     this.locate();
     var distance: number = 10000000000000000000000000000000000000000000000000000000;
     var nDistance: number;
@@ -132,7 +141,9 @@ export class HomePage {
       this.lat = pos.coords.latitude;
       this.lng = pos.coords.longitude;
 
-    }).catch(err => this.presentToast('É precisso acessar a sua localização conseguir funcionar'));
+    }).catch(err => {
+      this.alerta()
+    });
   } 
   /* função responsável por mudar a tela*/
   changeShow() {
@@ -165,21 +176,77 @@ export class HomePage {
   }
 
  async caixaDialogo(){
-    const confirm = await this.toastController.create({
+    const confirm = await this.alertController.create({
       // title: '<b>Location</b>',
-       message: 'Location information não está ligado. Vá até as configurações habilitar a localização',
+       header: 'O GPS não está ligado',
+       message: 'Para eu funcionar corretamente preciso que seu GPS esteja ligado',
+       
        buttons: [
 
+        {
+          text:  'Sair ',
+          handler:() => {
+           confirm.dismiss();
+          }
+        },
+
          {
-           text: 'GO TO SETTINGS',
+           text: 'Ligar o GPS',
            handler: () => {
-             Diagnostic.switchToLocationSettings();
+             LocationAccuracy.request(LocationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
+             this.NearPlace()
+
 
            }
          }
-       ]
+
+         
+       ],
+       backdropDismiss: false
      });
      confirm.present();
+  }
+
+  async alerta(){
+    const confirm = await this.alertController.create({
+      // title: '<b>Location</b>',
+       header: 'Não consigo consultar sua localização',
+       message: 'Para eu funcionar preciso da permissão para usar a sua Geolocalização',
+       buttons: [
+
+        {
+          text:  'Sair ',
+          handler:() => {
+           confirm.dismiss();
+          }
+        },
+
+         {
+           text: 'Conseder permissão',
+           handler: () => {
+             AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+             this.NearPlace()
+
+
+           }
+         }
+
+         
+       ],
+       backdropDismiss: false
+     });
+     confirm.present();
+  }
+
+
+  async Loading (){
+    const loading = await this.loadingController.create({
+      spinner: 'bubbles',
+      message: 'Carregando...',
+      duration: 3000
+    });
+
+    await loading.present()
   }
 
 
