@@ -1,5 +1,8 @@
 import { Component, OnInit,ViewChild  } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController, IonTabs, IonTabBar } from '@ionic/angular';
+
+
 
 
 @Component({
@@ -9,16 +12,20 @@ import { Router } from '@angular/router';
 })
 export class InicioPage implements OnInit {
 
+  @ViewChild('myTabs') tabRef: IonTabs;
+
   constructor(
-    public router: Router
+    public router: Router,
+    private alertController: AlertController
   ) { 
+    
+
     
   }
 
-  
 
-  change(){
-    this.router.navigate(['home'])
+  change(name:string){
+    this.router.navigate([name])
   }
 
   ngOnInit() {

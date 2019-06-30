@@ -1,10 +1,3 @@
-<ion-header>
-  <ion-toolbar color = "light shade">
-    <ion-title  >
-       Turi
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content >
 
@@ -25,4 +18,27 @@
 </ion-card>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+      <ion-tabs #myTabs>
+          <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="schedule" (click)="change('inicio')"  >
+              <ion-icon name="book"></ion-icon>
+              <ion-label>Como usar</ion-label>
+            </ion-tab-button>
+      
+            <ion-tab-button tab="speakers"  >
+              <ion-icon name="home"></ion-icon>
+              <ion-label>Centro Histórico</ion-label>
+            </ion-tab-button>
+      
+            <ion-tab-button tab="about" (click)="change('about')" >
+              <ion-icon name="information-circle"></ion-icon>
+              <ion-label>About</ion-label>
+            </ion-tab-button>
+          </ion-tab-bar>
+        </ion-tabs>
+  </ion-toolbar>
+</ion-footer>
 

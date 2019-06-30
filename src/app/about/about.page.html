@@ -1,0 +1,59 @@
+
+
+<ion-content>
+
+    <ion-card id = "backcolor" >
+
+        <ion-card-content>
+    
+
+            <img src="../assets/centroRua.jpg" alt="">
+
+            
+
+          <p>
+            <strong>
+              O Centro Histórico
+            </strong>
+
+              é um conjunto arquitetônico com seus 
+              405 anos de história, é composto por 
+              casarões seculares, revestidos por 
+              azulejos portugueses, reúne um acervo com mais de mil 
+              prédios construídos entre os séculos 18 e 19.
+
+
+          </p>
+
+          <p>
+              Além do mais, o centro histórico é um dos matrimónios culturais da humanidade 
+              desde de 6 de dezembro de 1997... <a href="http://www.turismo.ma.gov.br/cidades-patrimonio-historia-e-arquitetura/">Ler mais</a>
+          </p>
+        </ion-card-content>
+        
+      </ion-card>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-tabs #myTabs>
+            <ion-tab-bar slot="bottom">
+              <ion-tab-button tab="schedule" (click)="change('inicio')"  >
+                <ion-icon name="book"></ion-icon>
+                <ion-label>Como usar</ion-label>
+              </ion-tab-button>
+        
+              <ion-tab-button tab="speakers" (click)="change('home')" >
+                <ion-icon name="home"></ion-icon>
+                <ion-label>Centro Histórico</ion-label>
+              </ion-tab-button>
+        
+              <ion-tab-button tab="about"  >
+                <ion-icon name="information-circle"></ion-icon>
+                <ion-label>About</ion-label>
+              </ion-tab-button>
+            </ion-tab-bar>
+          </ion-tabs>
+    </ion-toolbar>
+  </ion-footer>

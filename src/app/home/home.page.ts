@@ -81,7 +81,7 @@ export class HomePage {
   async  NearPlace() {
     this.Loading()
     this.locate();
-    const maxDistance =  0.01
+    const maxDistance =  0.04
     var distance: number = 10000000000000000000000000000000000000000000000000000000;
     var nDistance: number;
     var distancePlace: number;
@@ -117,6 +117,8 @@ export class HomePage {
            distancePlace = nDistance;
          }
        })
+       console.log(this.lat,this.lng)
+       console.log(distancePlace,maxDistance)
        if (distancePlace < maxDistance){
 
         this.tela = true;
@@ -128,7 +130,7 @@ export class HomePage {
 
        }else{
         this.DHNP()
-       }
+      }
      });
 
 
@@ -278,6 +280,11 @@ async DHNP(){
     });
 
     await loading.present()
+  }
+
+  change(name:string){
+    clearInterval(this.interval)
+    this.router.navigate([name])
   }
 
 }

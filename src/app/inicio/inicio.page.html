@@ -8,14 +8,53 @@
 -->
 <ion-content>
 
-
-
-  
-
-
-
-  <ion-button (click)="change()" >
-    Iniciar
-  </ion-button>
+    <ion-card id = "backcolor" >
+        <ion-card-content>
+          <h2>
+            <strong>
+              Bem vindo ao Turi, vou lhe ajudar a conhecer melhor o centor historico de São Luís.
+            </strong>
+          </h2>
+        </ion-card-content>
+        
+      </ion-card>
+      <ion-card id = "backcolor" >
+          <ion-card-content>
+            <img src="../assets/centroRua.jpg" alt="">
+            <h2 id='distance'>
+              <strong>
+                  Para começar, basca clicar em Centro Histórico.
+                  Conforme for andando por ele irei lhe contando a história
+                  dos casarões mais próximos.
+              </strong>
+              
+            </h2>
+          </ion-card-content>
+          
+        </ion-card>
 
 </ion-content>
+
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-tabs #myTabs selectedIndex="2">
+            <ion-tab-bar slot="bottom">
+              <ion-tab-button tab="schedule"  >
+                <ion-icon name="book"></ion-icon>
+                <ion-label>Como usar</ion-label>
+              </ion-tab-button>
+        
+              <ion-tab-button tab="speakers" (click)="change('home')"  >
+                <ion-icon name="home"></ion-icon>
+                <ion-label>Centro Histórico</ion-label>
+              </ion-tab-button>
+        
+              <ion-tab-button tab="about" (click)="change('about')" >
+                <ion-icon name="information-circle"></ion-icon>
+                <ion-label>About</ion-label>
+              </ion-tab-button>
+            </ion-tab-bar>
+          </ion-tabs>
+    </ion-toolbar>
+  </ion-footer>
