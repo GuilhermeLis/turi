@@ -15,8 +15,4 @@ export class AboutPage implements OnInit {
   ngOnInit() {
   }
 
-  change(name:string){
-    this.router.navigate([name])
-  }
-
 }

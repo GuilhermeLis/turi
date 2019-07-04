@@ -282,9 +282,4 @@ async DHNP(){
     await loading.present()
   }
 
-  change(name:string){
-    clearInterval(this.interval)
-    this.router.navigate([name])
-  }
-
 }
