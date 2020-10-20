@@ -20,13 +20,6 @@ import { Network } from '@ionic-native/network';
 
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { Router } from '@angular/router';
-//import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-
-//import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-
-
-
-
 
 
 export interface Coordenada {
@@ -48,12 +41,12 @@ export class HomePage {
   todo$: Observable<Coordenada[]>;
   img: Observable<string>;
   tela: boolean = false;
-  lat: any;
-  lng: any;
-  nameLugar: string;
+  lat: any; // latitude
+  lng: any; //longetude
+  nameLugar: string; // nome do lugar
   showCard: boolean = false;
   showDiv: boolean = false;
-  histo: string;
+  histo: string; // história do lugar
   name: string;
   url: string;
   private interval: any;
@@ -117,8 +110,7 @@ export class HomePage {
            distancePlace = nDistance;
          }
        })
-       console.log(this.lat,this.lng)
-       console.log(distancePlace,maxDistance)
+      
        if (distancePlace < maxDistance){
 
         this.tela = true;
